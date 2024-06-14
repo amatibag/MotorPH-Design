@@ -1,0 +1,4 @@
+"Employee No.","Last Name","First Name","Worked Hours","Basic Salary","Hourly Rate","Gross Income","SSS Deduction ","Philhealth Deduction ","Pagibig Deduction","Withholding Tax","Covered Month","Covered Year","Benefits","Total Deductions","Take-Home pay"
+"4","Reyes","Isabella","165","60000","357.14","58928.57","1125.00","883.93","100.00","8371.66","May","2020","4500.00","10480.59","52947.98"
+"4","Reyes","Isabella","160","60000","357.14","57142.86","1125.00","857.14","100.00","7931.93","July","2020","4500.00","10014.07","51628.79"
+"2","Lim","Antonio","153","60000","357.14","54642.86","1125.00","819.64","100.00","7316.30","April","2020","4500.00","9360.95","49781.91"
