@@ -15,9 +15,8 @@ public class Main {
 
     public static void main(String args[]) throws FileNotFoundException, IOException {
 
-        new EmployeeProfile().setVisible(true);
-       
-        new NewJPanel().setVisible(true);
+        new LoginManager().setVisible(true);
+
     }
 
 }

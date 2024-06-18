@@ -40,7 +40,6 @@ public class Employee {
         this.riceSubsidy = riceSubsidy;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
-
     }
 
     // Getters and Setters
@@ -64,7 +63,7 @@ public class Employee {
         return firstName;
     }
 
-    public void setFirstName() {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -72,7 +71,7 @@ public class Employee {
         return employeeBirthday;
     }
 
-    public void setEmployeeBirthday() {
+    public void setEmployeeBirthday(String employeeBirthday ) {
         this.employeeBirthday = employeeBirthday;
     }
 

@@ -40,61 +40,6 @@ public class LoginManager extends javax.swing.JFrame {
         loadAttemptsFromCSV();
     }
 
-    public class EmployeeLogin {
-
-        // Attributes
-        private String username;
-        private String password;
-        private String employeeNumber;
-        private String userEmployeeNumber;
-
-        // Constructor
-        public EmployeeLogin(String employeeNumber, String username, String password) {
-            this.employeeNumber = employeeNumber;
-            this.username = username;
-            this.password = password;
-        }
-
-        // contructor for saving user employee number
-        public EmployeeLogin(String userEmployeeNumber) {
-            this.userEmployeeNumber = userEmployeeNumber;
-        }
-
-        // Getters 
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public String getEmployeeNumber() {
-            return employeeNumber;
-        }
-
-        public String getUserEmployeeNumber() {
-            return userEmployeeNumber;
-        }
-
-        // Setters
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public void setEmployeeNumber(String employeeNumber) {
-            this.employeeNumber = employeeNumber;
-        }
-
-        public void setUserEmployeeNumber(String userEmployeeNumber) {
-            this.userEmployeeNumber = userEmployeeNumber;
-        }
-    }
-
     public List< EmployeeLogin> parseUserCredentials(List<String[]> records) {
         for (String[] record : records) {
             String employeeNumber = record[0];
@@ -184,27 +129,21 @@ public class LoginManager extends javax.swing.JFrame {
         String inputUsername = jTextFieldUsername.getText().toLowerCase(); // accept any case 
         String inputPassword = jPasswordFieldInput.getText();
         String determineEmployeeNumber = "0";
-        
-       EmployeeLogin userEmployee = new EmployeeLogin(determineEmployeeNumber);
 
         for (int i = 0; i < employeeDetails.size(); i++) {
             EmployeeLogin employee_ = employeeDetails.get(i);
             if (employee_.getUsername().toLowerCase().equals(inputUsername) && employee_.getPassword().equals(inputPassword)) {
                 determineEmployeeNumber = employeeDetails.get(i).getEmployeeNumber();
-                userEmployee.setUserEmployeeNumber(determineEmployeeNumber);
                 return determineEmployeeNumber;
             }
         }
         return null;
     }
 
-    public void sendInformation() throws IOException {
-
-        String employeeNum = matchEmployeeNumber();
-        EmployeeProfileUser profileUser = new EmployeeProfileUser(employeeNum);
-//        profileUser.jTextFieldEmployeeNum.setText(employeeNum);// testing
+    public void openUserProfile() throws IOException {
+        EmployeeProfileUser profileUser = new EmployeeProfileUser(matchEmployeeNumber());
         profileUser.setVisible(true);
-//        profileUser.showDetails();
+
     }
 
     private void openDashboard() throws IOException {
@@ -215,7 +154,7 @@ public class LoginManager extends javax.swing.JFrame {
 
         } else {
             setVisible(false);
-            sendInformation(); //open EmployeeProfileUser and show the employee information
+            openUserProfile(); //open EmployeeProfileUser and show the employee information
 
         }
     }
