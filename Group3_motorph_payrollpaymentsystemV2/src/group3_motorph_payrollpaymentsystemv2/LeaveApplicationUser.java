@@ -10,14 +10,18 @@ import java.util.logging.Logger;
  */
 public class LeaveApplicationUser extends javax.swing.JFrame {
 
-    private static String userEmployeeNumber;
+    private String userEmployeeNumber;
+    private String userFullName;
+    private static String[] userInformation;
 
     /**
      * Creates new form LeaveApplicationUser
      */
-    public LeaveApplicationUser(String employeeNumber) {
+    public LeaveApplicationUser(String[] userInformation) {
+        this.userEmployeeNumber = userInformation[0];
+        this.userFullName = userInformation[1];
+
         initComponents();
-        userEmployeeNumber = employeeNumber;
         showDetails();
 
     }
@@ -25,10 +29,26 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
     public String getEmployeeNumber() {
         return userEmployeeNumber;
     }
-    
-    public void  showDetails() {
-       jTextFieldEmployeeNum.setText(userEmployeeNumber);
-       
+
+    public String getuserFullName() {
+        return userFullName;
+    }
+
+    public void showDetails() {
+        jTextFieldEmployeeNum.setText(getEmployeeNumber());
+        jTextFieldEmployeeName.setText(getuserFullName());
+    }
+
+    public void openUserProfile() {
+
+        try {
+            setVisible(false);
+            EmployeeProfileUser profileUser = new EmployeeProfileUser(getEmployeeNumber());
+            profileUser.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(LeaveApplicationUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -48,6 +68,7 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldEmployeeNum = new javax.swing.JTextField();
+        jTextFieldEmployeeName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +110,12 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldEmployeeName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldEmployeeNameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -96,7 +123,10 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(38, 38, 38)
@@ -109,8 +139,10 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldEmployeeNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -137,30 +169,26 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(85, 85, 85)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileActionPerformed
-        EmployeeProfileUser profileUser;
-        try {
-            profileUser = new EmployeeProfileUser(getEmployeeNumber());
-            profileUser.setVisible(true);
-
-        } catch (IOException ex) {
-            Logger.getLogger(LeaveApplicationUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
+        openUserProfile();
     }//GEN-LAST:event_jButtonProfileActionPerformed
 
     private void jTextFieldEmployeeNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmployeeNumActionPerformed
         // TODO add your handling code here:
-        
-       
+
+
     }//GEN-LAST:event_jTextFieldEmployeeNumActionPerformed
+
+    private void jTextFieldEmployeeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmployeeNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldEmployeeNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +220,7 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LeaveApplicationUser(userEmployeeNumber).setVisible(true);
+                new LeaveApplicationUser(userInformation).setVisible(true);
             }
         });
     }
@@ -205,6 +233,7 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField jTextFieldEmployeeName;
     private javax.swing.JTextField jTextFieldEmployeeNum;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,21 +15,103 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
     private List<Employee> employees = new ArrayList<>();
     private static String userEmployeeNumber;
 
-    public EmployeeProfileUser(String userEmployeeNumber) throws FileNotFoundException, IOException {
-        this.userEmployeeNumber = userEmployeeNumber;
+    public EmployeeProfileUser(String employeeNumber) throws FileNotFoundException, IOException {
+        this.userEmployeeNumber = employeeNumber;
 
         initComponents();
         String csvFile = "MotorPHEmployeeData.csv";
         csvRun(csvFile);
         showDetails();
+       
     }
 
     public String getEmployeeNumber() {
         return userEmployeeNumber;
     }
 
-    public void setEmployeeNumber(String userEmployeeNumber) {
-        this.userEmployeeNumber = userEmployeeNumber;
+    public void csvRun(String csvFile) throws FileNotFoundException, IOException {
+        List<String[]> records = Filehandling.readCSV(csvFile);
+        List<Employee> employees = parseRecords(records);
+
+    }
+
+//    public void setEmployeeNumber(String employeeNumber) {
+//        this.employeeNumber = employeeNumber;
+//        JLabel employeeNumberLabel = new JLabel("Employee Number: " + employeeNumber);
+//        add(employeeNumberLabel);
+//    }
+//    // Method to get the text of the JLabel
+//    public String getEmployeeNumberLabelText() {
+//        if (employeeNumberLabel != null) {
+//            return employeeNumberLabel.getText();
+//        } else {
+//            return null;
+//        }
+//    }
+    // Method to parse records into Employee objects
+    public List<Employee> parseRecords(List<String[]> records) {
+
+        for (String[] record : records) {
+            String employeeNumber = record[0];
+            String lastName = record[1];
+            String firstName = record[2];
+            String employeeBirthday = record[3];
+            String address = record[4];
+            String phoneNumber = record[5];
+            String sssNumber = record[6];
+            String philHealthNumber = record[7];
+            String tinNumber = record[8];
+            String pagIbigNumber = record[9];
+            String status = record[10];
+            String position = record[11];
+            String immediateSupervisor = record[12];
+            String basicSalary = record[13];
+            String riceSubsidy = record[14];
+            String phoneAllowance = record[15];
+            String clothingAllowance = record[16];
+
+            Employee employee = new Employee(employeeNumber, lastName, firstName, employeeBirthday, address, phoneNumber, sssNumber, philHealthNumber, tinNumber, pagIbigNumber, status, position, immediateSupervisor, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance);
+            employees.add(employee);
+        }
+
+        return employees;
+    }
+
+    public void showDetails() {
+        jTextFieldEmployeeNum.setText(getEmployeeNumber());
+
+        String basis = jTextFieldEmployeeNum.getText();
+        for (Employee employee : employees) {
+            if (employee.getEmployeeNumber().equals(basis)) {
+                jTextFieldLastName.setText(employee.getLastName());
+                jTextFieldFirstName.setText(employee.getFirstName());
+                jTextFieldBirthday.setText(employee.getEmployeeBirthday());
+                jTextAreaAddress.setText(employee.getAddress());
+                jTextFieldPhoneNum.setText(employee.getPhoneNumber());
+                jTextFieldSSSnum.setText(employee.getSssNumber());
+                jTextFieldPhilhealthNum.setText(employee.getPhilHealthNumber());
+                jTextFieldTINnum.setText(employee.getTinNumber());
+                jTextFieldPagibigNum.setText(employee.getPagIbigNumber());
+                jTextFieldStatus.setText(employee.getStatus());
+                jTextFieldPosition.setText(employee.getPosition());
+                jTextFieldSupervisor.setText(employee.getImmediateSupervisor());
+                jTextFieldBasicSalary.setText(employee.getBasicSalary());
+                jTextFieldRiceSubsidy.setText(employee.getRiceSubsidy());
+                jTextFieldPhoneAllow.setText(employee.getPhoneAllowance());
+                jTextFieldClothAllow.setText(employee.getClothingAllowance());
+
+            }
+        }
+    }
+
+    public String[] sendInformation() {
+        String[] userInformation = new String[2];;
+
+        userInformation[0] = jTextFieldEmployeeNum.getText();
+        userInformation[1] = jTextFieldLastName.getText() + " , " + jTextFieldFirstName.getText();
+
+        return userInformation;
+
     }
 
     /**
@@ -487,82 +569,6 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void csvRun(String csvFile) throws FileNotFoundException, IOException {
-        List<String[]> records = Filehandling.readCSV(csvFile);
-        List<Employee> employees = parseRecords(records);
-
-    }
-
-//    public void setEmployeeNumber(String employeeNumber) {
-//        this.employeeNumber = employeeNumber;
-//        JLabel employeeNumberLabel = new JLabel("Employee Number: " + employeeNumber);
-//        add(employeeNumberLabel);
-//    }
-//    // Method to get the text of the JLabel
-//    public String getEmployeeNumberLabelText() {
-//        if (employeeNumberLabel != null) {
-//            return employeeNumberLabel.getText();
-//        } else {
-//            return null;
-//        }
-//    }
-    // Method to parse records into Employee objects
-    public List<Employee> parseRecords(List<String[]> records) {
-
-        for (String[] record : records) {
-            String employeeNumber = record[0];
-            String lastName = record[1];
-            String firstName = record[2];
-            String employeeBirthday = record[3];
-            String address = record[4];
-            String phoneNumber = record[5];
-            String sssNumber = record[6];
-            String philHealthNumber = record[7];
-            String tinNumber = record[8];
-            String pagIbigNumber = record[9];
-            String status = record[10];
-            String position = record[11];
-            String immediateSupervisor = record[12];
-            String basicSalary = record[13];
-            String riceSubsidy = record[14];
-            String phoneAllowance = record[15];
-            String clothingAllowance = record[16];
-
-            Employee employee = new Employee(employeeNumber, lastName, firstName, employeeBirthday, address, phoneNumber, sssNumber, philHealthNumber, tinNumber, pagIbigNumber, status, position, immediateSupervisor, basicSalary, riceSubsidy, phoneAllowance, clothingAllowance);
-            employees.add(employee);
-        }
-
-        return employees;
-    }
-
-    public void showDetails() {
-
-        jTextFieldEmployeeNum.setText(getEmployeeNumber());
-
-        String basis = jTextFieldEmployeeNum.getText();
-        for (Employee employee : employees) {
-            if (employee.getEmployeeNumber().equals(basis)) {
-                jTextFieldLastName.setText(employee.getLastName());
-                jTextFieldFirstName.setText(employee.getFirstName());
-                jTextFieldBirthday.setText(employee.getEmployeeBirthday());
-                jTextAreaAddress.setText(employee.getAddress());
-                jTextFieldPhoneNum.setText(employee.getPhoneNumber());
-                jTextFieldSSSnum.setText(employee.getSssNumber());
-                jTextFieldPhilhealthNum.setText(employee.getPhilHealthNumber());
-                jTextFieldTINnum.setText(employee.getTinNumber());
-                jTextFieldPagibigNum.setText(employee.getPagIbigNumber());
-                jTextFieldStatus.setText(employee.getStatus());
-                jTextFieldPosition.setText(employee.getPosition());
-                jTextFieldSupervisor.setText(employee.getImmediateSupervisor());
-                jTextFieldBasicSalary.setText(employee.getBasicSalary());
-                jTextFieldRiceSubsidy.setText(employee.getRiceSubsidy());
-                jTextFieldPhoneAllow.setText(employee.getPhoneAllowance());
-                jTextFieldClothAllow.setText(employee.getClothingAllowance());
-
-            }
-        }
-
-    }
 
     private void jTextFieldPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPositionActionPerformed
         // TODO add your handling code here:
@@ -656,9 +662,9 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
 
     private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
         // TODO add your handling code here:
-
-        LeaveApplicationUser leaveUser = new LeaveApplicationUser(userEmployeeNumber);
-        dispose();
+        String[] employeeInformation = sendInformation();
+        LeaveApplicationUser leaveUser = new LeaveApplicationUser(employeeInformation);
+        setVisible(false);
         leaveUser.setVisible(true);
     }//GEN-LAST:event_jButtonLeaveAppActionPerformed
 
