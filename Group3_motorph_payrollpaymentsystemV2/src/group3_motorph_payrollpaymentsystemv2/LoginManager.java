@@ -140,22 +140,15 @@ public class LoginManager extends javax.swing.JFrame {
         return null;
     }
 
-    public void openUserProfile() throws IOException {
-        EmployeeProfileUser profileUser = new EmployeeProfileUser(matchEmployeeNumber());
-        profileUser.setVisible(true);
-
-    }
-
     private void openDashboard() throws IOException {
         String employeeNum = matchEmployeeNumber();
         if (employeeNum.equals("0")) {
             setVisible(false);
-            new EmployeeProfile().setVisible(true);
-
+            new EmployeeProfile().setVisible(true); // open Admin Dashboard
         } else {
             setVisible(false);
-            openUserProfile(); //open EmployeeProfileUser and show the employee information
-
+            EmployeeProfileUser profileUser = new EmployeeProfileUser(matchEmployeeNumber());
+            profileUser.setVisible(true); //open Employee Dashboard
         }
     }
 
@@ -178,6 +171,7 @@ public class LoginManager extends javax.swing.JFrame {
         jButtonExit = new javax.swing.JButton();
         jButtonLogIn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -242,6 +236,9 @@ public class LoginManager extends javax.swing.JFrame {
         jLabel5.setOpaque(true);
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 40));
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group3_motorph_payrollpaymentsystemv2/MotorPHHeader.png"))); // NOI18N
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 1000, 350));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -250,7 +247,6 @@ public class LoginManager extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             logIn();
-            matchEmployeeNumber();
             openDashboard();
 
         } catch (IOException ex) {
@@ -325,6 +321,7 @@ public class LoginManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordFieldInput;
