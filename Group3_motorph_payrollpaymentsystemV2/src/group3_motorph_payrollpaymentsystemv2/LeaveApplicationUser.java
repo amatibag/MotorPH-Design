@@ -1,14 +1,31 @@
 package group3_motorph_payrollpaymentsystemv2;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author danilo
  */
 public class LeaveApplicationUser extends javax.swing.JFrame {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+    private static final String FILE_NAME = "leave_applications.txt";
+    private static final int MAX_LEAVE_DAYS = 5;
+    public DefaultTableModel tableModel;
+    private static HashMap<String, Integer> leaveBalanceMap = new HashMap<>();
 
     private String userEmployeeNumber;
     private String userLastName;
@@ -73,6 +90,29 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
 
     }
 
+    private boolean isValidDate(String dateStr) {
+        if (!DATE_PATTERN.matcher(dateStr).matches()) {
+            return false;
+        }
+        try {
+            DATE_FORMAT.setLenient(false);
+            DATE_FORMAT.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private int calculateLeaveDays(String startDateStr, String endDateStr) {
+        try {
+            long startDate = DATE_FORMAT.parse(startDateStr).getTime();
+            long endDate = DATE_FORMAT.parse(endDateStr).getTime();
+            return (int) ((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        } catch (ParseException e) {
+            return -1;
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,23 +122,27 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButtonLeaveApp = new javax.swing.JButton();
         jButtonProfile = new javax.swing.JButton();
         jButtonPayroll = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jTextFieldEmployeeNum1 = new javax.swing.JTextField();
-        jTextFieldEmployeeNum2 = new javax.swing.JTextField();
+        jTextFieldEndDate = new javax.swing.JTextField();
+        jTextFieldStartDate = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldEmployeeNum = new javax.swing.JTextField();
         jTextFieldEmployeeName = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
+        jTableLeaveApplications = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jButtonEdit = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jButtonSave = new javax.swing.JButton();
+        jButtonLoad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -154,135 +198,122 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
                 .addContainerGap(181, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextFieldEmployeeNum1.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldEndDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldEmployeeNum1ActionPerformed(evt);
+                jTextFieldEndDateActionPerformed(evt);
             }
         });
+        jPanel3.add(jTextFieldEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 395, -1));
 
-        jTextFieldEmployeeNum2.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldStartDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldEmployeeNum2ActionPerformed(evt);
+                jTextFieldStartDateActionPerformed(evt);
             }
         });
+        jPanel3.add(jTextFieldStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 395, -1));
 
-        jLabel4.setText("End Date:");
+        jLabel4.setText("End Date (YYYY-MM-DD) :");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
         jLabel1.setText("Employee Name:");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
 
         jLabel2.setText("Employee ID:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
 
-        jLabel3.setText("Start Date:");
+        jLabel3.setText("Start Date (YYYY-MM-DD) :");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
+        jTextFieldEmployeeNum.setEditable(false);
         jTextFieldEmployeeNum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldEmployeeNumActionPerformed(evt);
             }
         });
+        jPanel3.add(jTextFieldEmployeeNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 395, -1));
 
+        jTextFieldEmployeeName.setEditable(false);
         jTextFieldEmployeeName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldEmployeeNameActionPerformed(evt);
             }
         });
+        jPanel3.add(jTextFieldEmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, 396, -1));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(14, 14, 14)
-                        .addComponent(jTextFieldEmployeeNum1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(18, 18, 18)
-                            .addComponent(jTextFieldEmployeeNum2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addComponent(jLabel2)
-                            .addGap(18, 18, 18)
-                            .addComponent(jTextFieldEmployeeNum, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldEmployeeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldEmployeeNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldEmployeeNum2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextFieldEmployeeNum1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setText("Submit Leave Application");
+        jButton1.setToolTipText("");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 400, -1));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(216, 33, -1, -1));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, 180));
 
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
+        jTableLeaveApplications.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Employee Name", "Employee ID", "Start Date", "End Date", "Leave Balance"
             }
         ));
-        jTable.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable);
-        jTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableLeaveApplications.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(jTableLeaveApplications);
+        jTableLeaveApplications.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 517, 210));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 560, 110));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("LEAVE SUMMARY");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Leave Application");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 580, 39));
+
+        jButtonEdit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonEdit.setText("Edit");
+        jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, -1, -1));
+
+        jButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonDelete.setText("Delete");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, -1, -1));
+
+        jButtonSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonSave.setText("Save");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 340, -1, -1));
+
+        jButtonLoad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonLoad.setText("Load");
+        jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 340, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileActionPerformed
-        openUserProfile();
-    }//GEN-LAST:event_jButtonProfileActionPerformed
 
     private void jTextFieldEmployeeNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmployeeNumActionPerformed
         // TODO add your handling code here:
@@ -294,18 +325,13 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldEmployeeNameActionPerformed
 
-    private void jTextFieldEmployeeNum1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmployeeNum1ActionPerformed
+    private void jTextFieldEndDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEndDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldEmployeeNum1ActionPerformed
+    }//GEN-LAST:event_jTextFieldEndDateActionPerformed
 
-    private void jTextFieldEmployeeNum2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmployeeNum2ActionPerformed
+    private void jTextFieldStartDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldStartDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldEmployeeNum2ActionPerformed
-
-    private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jButtonLeaveAppActionPerformed
+    }//GEN-LAST:event_jTextFieldStartDateActionPerformed
 
     private void jButtonPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPayrollActionPerformed
         // TODO add your handling code here:
@@ -320,6 +346,135 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             Logger.getLogger(EmployeeProfileUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonPayrollActionPerformed
+
+    private void jButtonProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileActionPerformed
+        openUserProfile();
+    }//GEN-LAST:event_jButtonProfileActionPerformed
+
+    private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLeaveAppActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String name = jTextFieldEmployeeName.getText();
+        String id = jTextFieldEmployeeNum.getText();
+        String startDate = jTextFieldStartDate.getText();
+        String endDate = jTextFieldEndDate.getText();
+        
+        tableModel = (DefaultTableModel) jTableLeaveApplications.getModel();
+
+        // Validate input fields
+        if (startDate.isEmpty() || endDate.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!isValidDate(startDate) || !isValidDate(endDate)) {
+            JOptionPane.showMessageDialog(null, "Dates must be in the format YYYY-MM-DD and valid", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int leaveDays = calculateLeaveDays(startDate, endDate);
+        if (leaveDays < 0) {
+            JOptionPane.showMessageDialog(null, "End date must be after start date", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int remainingLeave = leaveBalanceMap.getOrDefault(id, MAX_LEAVE_DAYS) - leaveDays;
+        if (remainingLeave < 0) {
+            JOptionPane.showMessageDialog(null, "Insufficient leave balance", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        leaveBalanceMap.put(id, remainingLeave);
+
+         tableModel.addRow(new Object[]{name, id, startDate, endDate, remainingLeave});
+
+        // Clear input fields
+        jTextFieldStartDate.setText("");
+        jTextFieldEndDate.setText("");
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTableLeaveApplications.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "No row selected", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String name = (String) tableModel.getValueAt(selectedRow, 0);
+        String id = (String) tableModel.getValueAt(selectedRow, 1);
+        String startDate = (String) tableModel.getValueAt(selectedRow, 2);
+        String endDate = (String) tableModel.getValueAt(selectedRow, 3);
+        int leaveBalance = (int) tableModel.getValueAt(selectedRow, 4);
+
+        jTextFieldStartDate.setText(startDate);
+        jTextFieldEndDate.setText(endDate);
+
+        leaveBalanceMap.put(id, leaveBalance + calculateLeaveDays(startDate, endDate));
+        tableModel.removeRow(selectedRow);
+
+    }//GEN-LAST:event_jButtonEditActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        // TODO add your handling code here:
+        
+         int selectedRow = jTableLeaveApplications.getSelectedRow();
+                if (selectedRow != -1) {
+                    String id = (String) tableModel.getValueAt(selectedRow, 1);
+                    String startDate = (String) tableModel.getValueAt(selectedRow, 2);
+                    String endDate = (String) tableModel.getValueAt(selectedRow, 3);
+                    int leaveDays = calculateLeaveDays(startDate, endDate);
+                    leaveBalanceMap.put(id, leaveBalanceMap.get(id) + leaveDays);
+                    tableModel.removeRow(selectedRow);
+                }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        // TODO add your handling code here:
+        
+          try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        String name = (String) tableModel.getValueAt(i, 0);
+                        String id = (String) tableModel.getValueAt(i, 1);
+                        String startDate = (String) tableModel.getValueAt(i, 2);
+                        String endDate = (String) tableModel.getValueAt(i, 3);
+                        int leaveBalance = (int) tableModel.getValueAt(i, 4);
+                        writer.write(name + "," + id + "," + startDate + "," + endDate + "," + leaveBalance);
+                        writer.newLine();
+                    }
+                    JOptionPane.showMessageDialog(null, "Data saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error saving data", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+    }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
+        // TODO add your handling code here:
+        
+         tableModel.setRowCount(0);
+                try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] data = line.split(",");
+                        if (data.length == 5) {
+                            String name = data[0];
+                            String id = data[1];
+                            String startDate = data[2];
+                            String endDate = data[3];
+                            int leaveBalance = Integer.parseInt(data[4]);
+                            tableModel.addRow(new Object[]{name, id, startDate, endDate, leaveBalance});
+                            leaveBalanceMap.put(id, leaveBalance);
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, "Data loaded successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error loading data", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+    }//GEN-LAST:event_jButtonLoadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -357,22 +512,26 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonEdit;
     private javax.swing.JButton jButtonLeaveApp;
+    private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPayroll;
     private javax.swing.JButton jButtonProfile;
+    private javax.swing.JButton jButtonSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable;
+    private javax.swing.JTable jTableLeaveApplications;
     private javax.swing.JTextField jTextFieldEmployeeName;
     private javax.swing.JTextField jTextFieldEmployeeNum;
-    private javax.swing.JTextField jTextFieldEmployeeNum1;
-    private javax.swing.JTextField jTextFieldEmployeeNum2;
+    private javax.swing.JTextField jTextFieldEndDate;
+    private javax.swing.JTextField jTextFieldStartDate;
     // End of variables declaration//GEN-END:variables
 }
