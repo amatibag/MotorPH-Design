@@ -22,7 +22,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         String csvFile = "MotorPHEmployeeData.csv";
         csvRun(csvFile);
         showDetails();
-       
+
     }
 
     public String getEmployeeNumber() {
@@ -105,11 +105,12 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
     }
 
     public String[] sendInformation() {
-        String[] userInformation = new String[2];;
+        String[] userInformation = new String[3];;
 
         userInformation[0] = jTextFieldEmployeeNum.getText();
-        userInformation[1] = jTextFieldLastName.getText() + " , " + jTextFieldFirstName.getText();
-
+        userInformation[1] = jTextFieldLastName.getText();
+        userInformation[2] = jTextFieldFirstName.getText();
+        
         return userInformation;
 
     }
@@ -151,7 +152,6 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         jTextFieldPhoneAllow = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jTextFieldClothAllow = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
         jTextFieldBasicSalary = new javax.swing.JTextField();
         jLabelBasicSalary = new javax.swing.JLabel();
         jTextFieldFirstName = new javax.swing.JTextField();
@@ -162,43 +162,45 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jTextFieldPosition = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
+        jButtonProfile = new javax.swing.JButton();
         jButtonLeaveApp = new javax.swing.JButton();
+        jButtonPayroll = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
         setMinimumSize(new java.awt.Dimension(900, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Status");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 54, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
 
         jLabel3.setText("Employee No.");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 84, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
 
         jLabel4.setText("Last Name");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 124, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, -1, -1));
 
         jLabel6.setText("Birthday");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 194, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, -1, -1));
 
         jLabel7.setText("SSS No.");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 124, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, -1, -1));
 
         jLabel8.setText("Phone Number");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(33, 229, -1, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
 
         jLabel9.setText("PhilHealth No.");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(411, 159, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 140, -1, -1));
 
         jLabel10.setText("TIN");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 194, -1, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, -1, -1));
 
         jLabel11.setText("Pagibig No.");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 229, -1, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 210, -1, -1));
 
         jTextFieldStatus.setEditable(false);
         jTextFieldStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +208,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldStatusActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 51, 204, -1));
+        jPanel1.add(jTextFieldStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 204, -1));
 
         jTextFieldEmployeeNum.setEditable(false);
         jTextFieldEmployeeNum.addActionListener(new java.awt.event.ActionListener() {
@@ -222,7 +224,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldEmployeeNumKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldEmployeeNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 84, 204, -1));
+        jPanel1.add(jTextFieldEmployeeNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 204, -1));
 
         jTextFieldLastName.setEditable(false);
         jTextFieldLastName.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +232,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldLastNameActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 121, 204, -1));
+        jPanel1.add(jTextFieldLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 204, -1));
 
         jTextFieldBirthday.setEditable(false);
         jTextFieldBirthday.addActionListener(new java.awt.event.ActionListener() {
@@ -243,7 +245,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldBirthdayKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldBirthday, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 191, 203, -1));
+        jPanel1.add(jTextFieldBirthday, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 203, -1));
 
         jTextFieldSSSnum.setEditable(false);
         jTextFieldSSSnum.setName(""); // NOI18N
@@ -252,10 +254,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldSSSnumActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldSSSnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 121, 206, -1));
+        jPanel1.add(jTextFieldSSSnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, 206, -1));
 
         jTextFieldPagibigNum.setEditable(false);
-        jPanel1.add(jTextFieldPagibigNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 226, 206, -1));
+        jPanel1.add(jTextFieldPagibigNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 206, -1));
 
         jTextFieldTINnum.setEditable(false);
         jTextFieldTINnum.addActionListener(new java.awt.event.ActionListener() {
@@ -263,7 +265,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldTINnumActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldTINnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 191, 206, -1));
+        jPanel1.add(jTextFieldTINnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 170, 206, -1));
 
         jTextFieldPhoneNum.setEditable(false);
         jTextFieldPhoneNum.addActionListener(new java.awt.event.ActionListener() {
@@ -271,7 +273,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldPhoneNumActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldPhoneNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 226, 203, -1));
+        jPanel1.add(jTextFieldPhoneNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, 203, -1));
 
         jTextFieldPhilhealthNum.setEditable(false);
         jTextFieldPhilhealthNum.addActionListener(new java.awt.event.ActionListener() {
@@ -279,10 +281,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldPhilhealthNumActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldPhilhealthNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 156, 206, -1));
+        jPanel1.add(jTextFieldPhilhealthNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 130, 206, -1));
 
         jLabel14.setText("Immediate Supervisor");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(357, 87, -1, -1));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, -1, -1));
 
         jTextFieldSupervisor.setEditable(false);
         jTextFieldSupervisor.addActionListener(new java.awt.event.ActionListener() {
@@ -290,10 +292,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldSupervisorActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldSupervisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 84, 206, -1));
+        jPanel1.add(jTextFieldSupervisor, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 206, -1));
 
         jLabel15.setText("Rice Subsidy");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 263, -1, -1));
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 240, -1, -1));
 
         jTextFieldRiceSubsidy.setEditable(false);
         jTextFieldRiceSubsidy.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -301,11 +303,11 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldRiceSubsidyKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldRiceSubsidy, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 260, 205, -1));
+        jPanel1.add(jTextFieldRiceSubsidy, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 205, -1));
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(311, 364, -1, -1));
 
         jLabel17.setText("Phone Allowance");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(397, 300, -1, -1));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, -1, -1));
 
         jTextFieldPhoneAllow.setEditable(false);
         jTextFieldPhoneAllow.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -313,10 +315,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldPhoneAllowKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldPhoneAllow, new org.netbeans.lib.awtextra.AbsoluteConstraints(492, 300, 207, -1));
+        jPanel1.add(jTextFieldPhoneAllow, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 207, -1));
 
         jLabel19.setText("Clothing  Allowance");
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(374, 338, -1, -1));
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 310, -1, -1));
 
         jTextFieldClothAllow.setEditable(false);
         jTextFieldClothAllow.addActionListener(new java.awt.event.ActionListener() {
@@ -329,11 +331,7 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldClothAllowKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldClothAllow, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 335, 207, -1));
-
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel13.setText("EMPLOYEE INFORMATION");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 13, -1, -1));
+        jPanel1.add(jTextFieldClothAllow, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, 207, -1));
 
         jTextFieldBasicSalary.setEditable(false);
         jTextFieldBasicSalary.addActionListener(new java.awt.event.ActionListener() {
@@ -346,10 +344,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldBasicSalaryKeyTyped(evt);
             }
         });
-        jPanel1.add(jTextFieldBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 330, 206, -1));
+        jPanel1.add(jTextFieldBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 206, -1));
 
         jLabelBasicSalary.setText("Basic Salary");
-        jPanel1.add(jLabelBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 330, -1, -1));
+        jPanel1.add(jLabelBasicSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
         jTextFieldFirstName.setEditable(false);
         jTextFieldFirstName.addActionListener(new java.awt.event.ActionListener() {
@@ -357,13 +355,13 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldFirstNameActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 156, 204, -1));
+        jPanel1.add(jTextFieldFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 204, -1));
 
         jLabel5.setText("First Name");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 156, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
 
         jLabel20.setText("Address");
-        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, -1, -1));
+        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, -1, -1));
 
         jTextAreaAddress.setEditable(false);
         jTextAreaAddress.setColumns(20);
@@ -371,10 +369,10 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         jTextAreaAddress.setRows(5);
         jScrollPane1.setViewportView(jTextAreaAddress);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 260, 207, 56));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 207, 56));
 
         jLabel18.setText("Positon");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(433, 54, -1, -1));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, -1, -1));
 
         jTextFieldPosition.setEditable(false);
         jTextFieldPosition.addActionListener(new java.awt.event.ActionListener() {
@@ -382,12 +380,19 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
                 jTextFieldPositionActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldPosition, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 51, 206, -1));
+        jPanel1.add(jTextFieldPosition, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 206, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 720, 370));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 720, 360));
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 204));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jButtonProfile.setText("Profile");
+        jButtonProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonProfileActionPerformed(evt);
+            }
+        });
 
         jButtonLeaveApp.setText("Leave Application");
         jButtonLeaveApp.addActionListener(new java.awt.event.ActionListener() {
@@ -396,24 +401,47 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
             }
         });
 
+        jButtonPayroll.setText("Payroll");
+        jButtonPayroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPayrollActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jButtonLeaveApp)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonLeaveApp)
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonPayroll)
+                            .addComponent(jButtonProfile))
+                        .addGap(50, 50, 50))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(344, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jButtonProfile)
+                .addGap(27, 27, 27)
+                .addComponent(jButtonPayroll)
+                .addGap(28, 28, 28)
                 .addComponent(jButtonLeaveApp)
-                .addGap(29, 29, 29))
+                .addContainerGap(197, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 400));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Employee Information");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 720, 40));
 
         pack();
         setLocationRelativeTo(null);
@@ -510,6 +538,11 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextFieldEmployeeNumKeyPressed
 
+    private void jButtonProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButtonProfileActionPerformed
+
     private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
         // TODO add your handling code here:
         String[] employeeInformation = sendInformation();
@@ -517,6 +550,19 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
         setVisible(false);
         leaveUser.setVisible(true);
     }//GEN-LAST:event_jButtonLeaveAppActionPerformed
+
+    private void jButtonPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPayrollActionPerformed
+        try {
+            // TODO add your handling code here:
+            String[] employeeInformation = sendInformation();
+            PayrollUser payrollUser = new PayrollUser(employeeInformation);
+            setVisible(false);
+            payrollUser.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeProfileUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButtonPayrollActionPerformed
 
     /**
      * @param args the command line arguments
@@ -562,9 +608,11 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLeaveApp;
+    private javax.swing.JButton jButtonPayroll;
+    private javax.swing.JButton jButtonProfile;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;

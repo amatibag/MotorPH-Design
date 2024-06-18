@@ -11,7 +11,8 @@ import java.util.logging.Logger;
 public class LeaveApplicationUser extends javax.swing.JFrame {
 
     private String userEmployeeNumber;
-    private String userFullName;
+    private String userLastName;
+    private String userFirstName;
     private static String[] userInformation;
 
     /**
@@ -19,7 +20,8 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
      */
     public LeaveApplicationUser(String[] userInformation) {
         this.userEmployeeNumber = userInformation[0];
-        this.userFullName = userInformation[1];
+        this.userLastName = userInformation[1];
+        this.userFirstName = userInformation[2];
 
         initComponents();
         showDetails();
@@ -30,7 +32,16 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         return userEmployeeNumber;
     }
 
+    public String getLastName() {
+        return userLastName;
+    }
+
+    public String getFirstName() {
+        return userFirstName;
+    }
+
     public String getuserFullName() {
+        String userFullName = getLastName() + "," + getFirstName();
         return userFullName;
     }
 
@@ -51,6 +62,17 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
 
     }
 
+    public String[] sendInformation() {
+        String[] userInformation = new String[3];;
+
+        userInformation[0] = jTextFieldEmployeeNum.getText();
+        userInformation[1] = getLastName();
+        userInformation[2] = getFirstName();
+
+        return userInformation;
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,6 +86,7 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButtonLeaveApp = new javax.swing.JButton();
         jButtonProfile = new javax.swing.JButton();
+        jButtonPayroll = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jTextFieldEmployeeNum1 = new javax.swing.JTextField();
         jTextFieldEmployeeNum2 = new javax.swing.JTextField();
@@ -78,7 +101,6 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 204));
@@ -98,28 +120,38 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
             }
         });
 
+        jButtonPayroll.setText("Payroll");
+        jButtonPayroll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPayrollActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jButtonProfile))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jButtonLeaveApp)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(51, 51, 51)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonPayroll)
+                    .addComponent(jButtonProfile))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addComponent(jButtonLeaveApp)
+                .addGap(22, 22, 22))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(237, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addComponent(jButtonProfile)
-                .addGap(38, 38, 38)
+                .addGap(44, 44, 44)
+                .addComponent(jButtonPayroll)
+                .addGap(33, 33, 33)
                 .addComponent(jButtonLeaveApp)
-                .addGap(53, 53, 53))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -272,8 +304,22 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
 
     private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_jButtonLeaveAppActionPerformed
+
+    private void jButtonPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPayrollActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            // TODO add your handling code here:
+            String[] employeeInformation = sendInformation();
+            PayrollUser payrollUser = new PayrollUser(employeeInformation);
+            setVisible(false);
+            payrollUser.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeProfileUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonPayrollActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,6 +358,7 @@ public class LeaveApplicationUser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLeaveApp;
+    private javax.swing.JButton jButtonPayroll;
     private javax.swing.JButton jButtonProfile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -345,6 +345,7 @@ public class PayrollProcessing extends javax.swing.JFrame {
             }
         });
 
+        jButtonCompute.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonCompute.setText("Compute");
         jButtonCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,6 +470,7 @@ public class PayrollProcessing extends javax.swing.JFrame {
 
         jLabel23.setText("Year");
 
+        jButtonAddtoRecords.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonAddtoRecords.setText("Add to Records");
         jButtonAddtoRecords.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
