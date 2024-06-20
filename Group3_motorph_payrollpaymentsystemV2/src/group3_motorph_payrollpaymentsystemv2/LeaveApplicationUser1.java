@@ -1,3 +1,4 @@
+
 package group3_motorph_payrollpaymentsystemv2;
 
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
@@ -15,11 +16,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+
 
 /**
  *
  * @author danilo
  */
+
 public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -46,7 +52,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     public String getEmployeeNumber() {
 
-        return "4";
+        return "1";
     }
 
     public String getLastName() {
@@ -67,21 +73,37 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         List<LeaveDetails> employees = parseRecords(records);
         informationTable(employees);
     }
-
-    // Method to parse records
+    
+   
     public List<LeaveDetails> parseRecords(List<String[]> records) {
 
+       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Sort list of String[] based on the first element (date)
+        Collections.sort(records, (o1, o2) -> {
+            Date date1;
+            Date date2;
+            try {
+                date1 = dateFormat.parse(o1[3]);
+                date2 = dateFormat.parse(o2[3]);
+            } catch (ParseException e) {
+                throw new IllegalArgumentException(e);
+            }
+            return date1.compareTo(date2);
+        });
+        
         for (String[] record : records) {
             String employeeNumber = record[0];
             String lastName = record[1];
             String firstName = record[2];
-            String startDate = record[3];
-            String endDate = record[4];
-            String leaveDay = record[5];
-            String leaveReason = record[6];
-            String leaveStatus = record[7];
+            String submittedDate = record[3];
+            String startDate = record[4];
+            String endDate = record[5];
+            String leaveDay = record[6];
+            String leaveReason = record[7];
+            String leaveStatus = record[8];
 
-            LeaveDetails leaveDetails = new LeaveDetails(employeeNumber, lastName, firstName,
+            LeaveDetails leaveDetails = new LeaveDetails(employeeNumber, lastName, firstName,submittedDate,
                     startDate, endDate, leaveDay,
                     leaveReason, leaveStatus);
             employees.add(leaveDetails);
@@ -92,10 +114,12 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     private void informationTable(List<LeaveDetails> employees) {
         DefaultTableModel tableModel = (DefaultTableModel) jTableLeaveApplications.getModel();
+        
         tableModel.setRowCount(0); // Clear existing rows
         for (LeaveDetails employee : employees) {
             if (employee.getEmployeeNumber().equals(getEmployeeNumber())) {
                 tableModel.addRow(new Object[]{
+                    employee.getSubmittedDate(),
                     employee.getStartDate(),
                     employee.getEndDate(),
                     employee.getLeaveDay(),
@@ -126,7 +150,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
     public String[] sendInformation() {
         String[] userInformation = new String[3];;
 
-        userInformation[0] = getEmployeeNumber() ;
+        userInformation[0] = getEmployeeNumber();
         userInformation[1] = "Giltendez";
         userInformation[2] = "Danilo";
 
@@ -134,7 +158,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     }
 
-    private int calculateLeaveDays(String startDateStr, String endDateStr) {
+    public int calculateLeaveDays(String startDateStr, String endDateStr) {
         try {
             long startDate = DATE_FORMAT.parse(startDateStr).getTime();
             long endDate = DATE_FORMAT.parse(endDateStr).getTime();
@@ -144,12 +168,19 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         }
     }
 
-    private static String formatDate(Date date) {
+    public static String formatDate(Date date) {
         if (date == null) {
             return "";
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
+    }
+
+    public static String getCurrentDate() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return currentDateTime.format(formatter);
     }
 
     /**
@@ -288,7 +319,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
                 jButtonSubmitActionPerformed(evt);
             }
         });
-        jPanel3.add(jButtonSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 400, -1));
+        jPanel3.add(jButtonSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 400, -1));
 
         jLabel6.setText("Reason for Leave :");
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
@@ -327,23 +358,21 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         jDateChooserEndDate.setDateFormatString("yyyy-MM-dd");
         jPanel3.add(jDateChooserEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, 210, -1));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 570, 200));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 570, 220));
 
         jTableLeaveApplications.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Start Date", "End Date", "Leave Days", "Reason for Leave", "Status"
+                "Date Submitted", "Start Date", "End Date", "Leave Days", "Reason for Leave", "Status"
             }
         ));
-        jTableLeaveApplications.setCellSelectionEnabled(false);
-        jTableLeaveApplications.setRowSelectionAllowed(true);
-        jTableLeaveApplications.setRowSorter(null);
+        jTableLeaveApplications.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(jTableLeaveApplications);
         jTableLeaveApplications.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 270, 560, 110));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 560, 110));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -357,7 +386,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
                 jButtonEditActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 400, -1, -1));
+        getContentPane().add(jButtonEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 420, -1, -1));
 
         jButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonDelete.setText("Delete");
@@ -366,7 +395,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
                 jButtonDeleteActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 400, -1, -1));
+        getContentPane().add(jButtonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, -1, -1));
 
         jButtonSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonSave.setText("Save");
@@ -375,7 +404,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
                 jButtonSaveActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 400, -1, -1));
+        getContentPane().add(jButtonSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 420, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -419,6 +448,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         String id = jTextFieldEmployeeNum.getText();
         String reasonLeave = jComboBoxLeaveReason.getSelectedItem().toString();
+        String dateSubmitted = getCurrentDate();
 
         if (reasonLeave.equals("Others")) {
             reasonLeave = reasonLeave + ", " + jTextFieldOthers.getText();
@@ -450,12 +480,20 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
         leaveBalanceMap.put(id, remainingLeave);
 
-        tableModel.addRow(new Object[]{startDate, endDate, leaveDays, reasonLeave, "Pending"});
+        tableModel.addRow(new Object[]{dateSubmitted, startDate, endDate, leaveDays, reasonLeave
+    
+
+    , "Pending",});
 
         // Clear input fields
-        jDateChooserStartDate.setDate(null);
-        jDateChooserEndDate.setDate(null);
-        jComboBoxLeaveReason.setSelectedIndex(0);
+    jDateChooserStartDate.setDate (
+
+    null);
+    jDateChooserEndDate.setDate (
+
+    null);
+    jComboBoxLeaveReason.setSelectedIndex (
+0);
 
     }//GEN-LAST:event_jButtonSubmitActionPerformed
 
@@ -479,47 +517,47 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         // TODO add your handling code here:
-  // Check if a row is selected
-    int selectedRow = jTableLeaveApplications.getSelectedRow();
-    if (selectedRow != -1) {
-        // Get the leave status of the selected row
-        String leaveStatus = (String) tableModel.getValueAt(selectedRow, 5); 
+        // Check if a row is selected
+        int selectedRow = jTableLeaveApplications.getSelectedRow();
+        if (selectedRow != -1) {
+            // Get the leave status of the selected row
+            String leaveStatus = (String) tableModel.getValueAt(selectedRow, 5);
 
-        if ("Pending".equals(leaveStatus)) {
-            // Show confirmation dialog
-            int response = JOptionPane.showConfirmDialog(null, "Do you want to proceed with deleting the entry?",
-                    "Delete Entry Confirmation",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+            if ("Pending".equals(leaveStatus)) {
+                // Show confirmation dialog
+                int response = JOptionPane.showConfirmDialog(null, "Do you want to proceed with deleting the entry?",
+                        "Delete Entry Confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
 
-            // Check the user's response
-            if (response == JOptionPane.YES_OPTION) {
-                // Get employee number from the selected row
-                String employeeNumber = (String) tableModel.getValueAt(selectedRow, 0); // Assuming employee number is in column 0
+                // Check the user's response
+                if (response == JOptionPane.YES_OPTION) {
+                    // Get employee number from the selected row
+                    String employeeNumber = (String) tableModel.getValueAt(selectedRow, 0); // Assuming employee number is in column 0
 
-                // Get start and end date from the selected row
-                String startDate = (String) tableModel.getValueAt(selectedRow, 3); // Assuming start date is in column 3
-                String endDate = (String) tableModel.getValueAt(selectedRow, 4); // Assuming end date is in column 4
+                    // Get start and end date from the selected row
+                    String startDate = (String) tableModel.getValueAt(selectedRow, 3); // Assuming start date is in column 3
+                    String endDate = (String) tableModel.getValueAt(selectedRow, 4); // Assuming end date is in column 4
 
-                // Calculate leave days (you need to implement this method)
-                int leaveDays = calculateLeaveDays(startDate, endDate);
+                    // Calculate leave days (you need to implement this method)
+                    int leaveDays = calculateLeaveDays(startDate, endDate);
 
-                // Update leave balance (assuming leaveBalanceMap is a predefined map)
-                leaveBalanceMap.put(employeeNumber, leaveBalanceMap.get(employeeNumber) + leaveDays);
+                    // Update leave balance (assuming leaveBalanceMap is a predefined map)
+                    leaveBalanceMap.put(employeeNumber, leaveBalanceMap.get(employeeNumber) + leaveDays);
 
-                // Remove the selected row from the table
-                tableModel.removeRow(selectedRow);
+                    // Remove the selected row from the table
+                    tableModel.removeRow(selectedRow);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Only entries with status 'Pending' can be deleted.",
+                        "Delete Entry Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Only entries with status 'Pending' can be deleted.",
-                    "Delete Entry Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select a row to delete.",
+                    "No Row Selected",
+                    JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Please select a row to delete.",
-                "No Row Selected",
-                JOptionPane.WARNING_MESSAGE);
-    }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
@@ -527,12 +565,13 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String name = (String) tableModel.getValueAt(i, 0);
-                String id = (String) tableModel.getValueAt(i, 1);
-                String startDate = (String) tableModel.getValueAt(i, 2);
-                String endDate = (String) tableModel.getValueAt(i, 3);
-                int leaveBalance = (int) tableModel.getValueAt(i, 4);
-                writer.write(name + "," + id + "," + startDate + "," + endDate + "," + leaveBalance);
+                String dateSubmitted = (String) tableModel.getValueAt(i, 0);
+                String name = (String) tableModel.getValueAt(i, 1);
+                String id = (String) tableModel.getValueAt(i, 2);
+                String startDate = (String) tableModel.getValueAt(i, 3);
+                String endDate = (String) tableModel.getValueAt(i, 4);
+                int leaveBalance = (int) tableModel.getValueAt(i, 5);
+                writer.write(dateSubmitted + "," + name + "," + id + "," + startDate + "," + endDate + "," + leaveBalance);
                 writer.newLine();
             }
             JOptionPane.showMessageDialog(null, "Data saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -569,41 +608,41 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new LeaveApplicationUser1().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(LeaveApplicationUser1.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(LeaveApplicationUser1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            try {
+                new LeaveApplicationUser1().setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(LeaveApplicationUser1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDelete;

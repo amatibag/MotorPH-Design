@@ -844,6 +844,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
         clearTextField();
+        textFieldEditSetting(false);
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonProfileDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileDeleteActionPerformed
@@ -865,10 +866,9 @@ public class EmployeeProfile extends javax.swing.JFrame {
             model.removeRow(selectedRowIndex);
 
             JOptionPane.showMessageDialog(this, "Employee deleted successfully");
-
         }
-        // If "No" or dialog is closed, do nothing and exit the dialog
 
+        textFieldEditSetting(false);
     }//GEN-LAST:event_jButtonProfileDeleteActionPerformed
 
     private void jButtonViewEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonViewEmployeeActionPerformed
