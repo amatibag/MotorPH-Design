@@ -35,19 +35,6 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
 
     }
 
-//    public void setEmployeeNumber(String employeeNumber) {
-//        this.employeeNumber = employeeNumber;
-//        JLabel employeeNumberLabel = new JLabel("Employee Number: " + employeeNumber);
-//        add(employeeNumberLabel);
-//    }
-//    // Method to get the text of the JLabel
-//    public String getEmployeeNumberLabelText() {
-//        if (employeeNumberLabel != null) {
-//            return employeeNumberLabel.getText();
-//        } else {
-//            return null;
-//        }
-//    }
     // Method to parse records into Employee objects
     public List<Employee> parseRecords(List<String[]> records) {
 

@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,8 @@ public class EmployeeProfile extends javax.swing.JFrame {
         String csvFile = "MotorPHEmployeeData.csv";
 
         csvRun(csvFile);
+
+        textFieldEditSetting(false);
     }
 
     /**
@@ -77,6 +80,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         jButtonProfileDelete = new javax.swing.JButton();
         jButtonUpdateDBS = new javax.swing.JButton();
         jButtonViewEmployee = new javax.swing.JButton();
+        jButtonSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -512,6 +516,13 @@ public class EmployeeProfile extends javax.swing.JFrame {
             }
         });
 
+        jButtonSave.setText("SAVE");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -521,10 +532,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonProfileDelete)
-                            .addComponent(jButtonProfileAdd)
                             .addComponent(jButtonClear)
-                            .addComponent(jButtonProfileUpdate)))
+                            .addComponent(jButtonProfileUpdate)
+                            .addComponent(jButtonSave)
+                            .addComponent(jButtonProfileAdd)
+                            .addComponent(jButtonProfileDelete)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jButtonUpdateDBS))
@@ -539,12 +551,14 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addComponent(jButtonClear)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonProfileAdd)
+                .addComponent(jButtonProfileDelete)
+                .addGap(39, 39, 39)
+                .addComponent(jButtonProfileAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonProfileUpdate)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonProfileDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(jButtonUpdateDBS)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonViewEmployee)
@@ -574,7 +588,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -657,38 +671,6 @@ public class EmployeeProfile extends javax.swing.JFrame {
         }
     }
 
-    public void updateEmployee() {
-
-        int selectedRowIndex = jTableEmployeeList.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel) jTableEmployeeList.getModel();
-
-        if (selectedRowIndex >= 0) {
-            model.setValueAt(jTextFieldEmployeeNum.getText(), selectedRowIndex, 0);
-            model.setValueAt(jTextFieldLastName.getText(), selectedRowIndex, 1);
-            model.setValueAt(jTextFieldFirstName.getText(), selectedRowIndex, 2);
-            model.setValueAt(jTextFieldBirthday.getText(), selectedRowIndex, 3);
-            model.setValueAt(jTextAreaAddress.getText(), selectedRowIndex, 4);
-            model.setValueAt(jTextFieldPhoneNum.getText(), selectedRowIndex, 5);
-            model.setValueAt(jTextFieldSSSnum.getText(), selectedRowIndex, 6);
-            model.setValueAt(jTextFieldPhilhealthNum.getText(), selectedRowIndex, 7);
-            model.setValueAt(jTextFieldTINnum.getText(), selectedRowIndex, 8);
-            model.setValueAt(jTextFieldPagibigNum.getText(), selectedRowIndex, 9);
-            model.setValueAt(jTextFieldStatus.getText(), selectedRowIndex, 10);
-            model.setValueAt(jTextFieldPosition.getText(), selectedRowIndex, 11);
-            model.setValueAt(jTextFieldSupervisor.getText(), selectedRowIndex, 12);
-            model.setValueAt(jTextFieldBasicSalary.getText(), selectedRowIndex, 13);
-            model.setValueAt(jTextFieldRiceSubsidy.getText(), selectedRowIndex, 14);
-            model.setValueAt(jTextFieldPhoneAllow.getText(), selectedRowIndex, 15);
-            model.setValueAt(jTextFieldClothAllow.getText(), selectedRowIndex, 16);
-
-            JOptionPane.showMessageDialog(this, "Employee information Updated successfully");
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Error");
-        }
-
-    }
-
     public List<String> createTableIdList() {
         DefaultTableModel model = (DefaultTableModel) jTableEmployeeList.getModel();
         List<String> tableIdList = new ArrayList<>();
@@ -713,9 +695,108 @@ public class EmployeeProfile extends javax.swing.JFrame {
         return true;
     }
 
+    public void addEmployee() {
+        List<String> tableIdList = createTableIdList();
+        boolean isUnique = isUniqueEmployeeId(tableIdList);
 
-    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
-        // TODO add your handling code here:
+        if (isUnique) {
+            DefaultTableModel model = (DefaultTableModel) jTableEmployeeList.getModel();
+
+            model.addRow(new Object[]{
+                jTextFieldEmployeeNum.getText(),
+                jTextFieldLastName.getText(),
+                jTextFieldFirstName.getText(),
+                jTextFieldBirthday.getText(),
+                jTextAreaAddress.getText(),
+                jTextFieldPhoneNum.getText(),
+                jTextFieldSSSnum.getText(),
+                jTextFieldPhilhealthNum.getText(),
+                jTextFieldTINnum.getText(),
+                jTextFieldPagibigNum.getText(),
+                jTextFieldStatus.getText(),
+                jTextFieldPosition.getText(),
+                jTextFieldSupervisor.getText(),
+                jTextFieldBasicSalary.getText(),
+                jTextFieldRiceSubsidy.getText(),
+                jTextFieldPhoneAllow.getText(),
+                jTextFieldClothAllow.getText()});
+
+            JOptionPane.showMessageDialog(this, "Employee added successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add employee", "Duplicate ID", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    public void updateEmployee() {
+
+        // Ask if user wants to proceed with updating the information of the employee
+        int response = JOptionPane.showConfirmDialog(null, "Do you want to proceed with updating the entry?",
+                "Update Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        // JOptionPane returns: 1 = No, 0 = Yes
+        // Check the user's response
+        if (response == JOptionPane.YES_OPTION) {
+            int selectedRowIndex = jTableEmployeeList.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel) jTableEmployeeList.getModel();
+
+            if (selectedRowIndex >= 0) {
+                model.setValueAt(jTextFieldEmployeeNum.getText(), selectedRowIndex, 0);
+                model.setValueAt(jTextFieldLastName.getText(), selectedRowIndex, 1);
+                model.setValueAt(jTextFieldFirstName.getText(), selectedRowIndex, 2);
+                model.setValueAt(jTextFieldBirthday.getText(), selectedRowIndex, 3);
+                model.setValueAt(jTextAreaAddress.getText(), selectedRowIndex, 4);
+                model.setValueAt(jTextFieldPhoneNum.getText(), selectedRowIndex, 5);
+                model.setValueAt(jTextFieldSSSnum.getText(), selectedRowIndex, 6);
+                model.setValueAt(jTextFieldPhilhealthNum.getText(), selectedRowIndex, 7);
+                model.setValueAt(jTextFieldTINnum.getText(), selectedRowIndex, 8);
+                model.setValueAt(jTextFieldPagibigNum.getText(), selectedRowIndex, 9);
+                model.setValueAt(jTextFieldStatus.getText(), selectedRowIndex, 10);
+                model.setValueAt(jTextFieldPosition.getText(), selectedRowIndex, 11);
+                model.setValueAt(jTextFieldSupervisor.getText(), selectedRowIndex, 12);
+                model.setValueAt(jTextFieldBasicSalary.getText(), selectedRowIndex, 13);
+                model.setValueAt(jTextFieldRiceSubsidy.getText(), selectedRowIndex, 14);
+                model.setValueAt(jTextFieldPhoneAllow.getText(), selectedRowIndex, 15);
+                model.setValueAt(jTextFieldClothAllow.getText(), selectedRowIndex, 16);
+
+                JOptionPane.showMessageDialog(this, "Employee information Updated successfully");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Error");
+            }
+        }
+        // If "No" or dialog is closed, do nothing and exit the dialog
+
+    }
+
+    public int determineLastEmployeeId() {
+
+        ArrayList<Integer> list = new ArrayList<>();
+        int rowCount = jTableEmployeeList.getRowCount();
+        int lastNumber = 0;
+
+        for (int i = 0; i < rowCount; i++) {
+            list.add(Integer.parseInt(jTableEmployeeList.getValueAt(i, 0).toString()));
+        }
+
+        // Sorting the ArrayList in descending order
+        Collections.sort(list, Collections.reverseOrder());
+
+        lastNumber = list.get(0);
+
+        return lastNumber;
+    }
+
+    public int generateUniqueId() {
+        int lastEmployeeID = determineLastEmployeeId();
+        int newEmployeeId = lastEmployeeID + 1;
+
+        return newEmployeeId;
+    }
+
+    public void clearTextField() {
         jTextFieldStatus.setText("");
         jTextFieldEmployeeNum.setText("");
         jTextFieldLastName.setText("");
@@ -736,8 +817,33 @@ public class EmployeeProfile extends javax.swing.JFrame {
         jTextFieldRiceSubsidy.setText("");
         jTextFieldPhoneAllow.setText("");
         jTextFieldClothAllow.setText("");
+    }
+
+    public void textFieldEditSetting(boolean condition) {
+
+        jTextFieldEmployeeNum.setEditable(condition);
+        jTextFieldLastName.setEditable(condition);
+        jTextFieldFirstName.setEditable(condition);
+        jTextFieldBirthday.setEditable(condition);
+        jTextAreaAddress.setEditable(condition);
+        jTextFieldPhoneNum.setEditable(condition);
+        jTextFieldSSSnum.setEditable(condition);
+        jTextFieldPhilhealthNum.setEditable(condition);
+        jTextFieldTINnum.setEditable(condition);
+        jTextFieldPagibigNum.setEditable(condition);
+        jTextFieldStatus.setEditable(condition);
+        jTextFieldPosition.setEditable(condition);
+        jTextFieldSupervisor.setEditable(condition);
+        jTextFieldBasicSalary.setEditable(condition);
+        jTextFieldRiceSubsidy.setEditable(condition);
+        jTextFieldPhoneAllow.setEditable(condition);
+        jTextFieldClothAllow.setEditable(condition);
+
+    }
 
 
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        clearTextField();
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonProfileDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileDeleteActionPerformed
@@ -804,20 +910,10 @@ public class EmployeeProfile extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonViewEmployeeActionPerformed
 
+
     private void jButtonProfileUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileUpdateActionPerformed
+        textFieldEditSetting(true);
 
-        // Ask if user wants to proceed with updating the information of the employee
-        int response = JOptionPane.showConfirmDialog(null, "Do you want to proceed with updating the entry?",
-                "Update Confirmation",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-
-        // JOptionPane returns: 1 = No, 0 = Yes
-        // Check the user's response
-        if (response == JOptionPane.YES_OPTION) {
-            updateEmployee();
-        }
-        // If "No" or dialog is closed, do nothing and exit the dialog
 
     }//GEN-LAST:event_jButtonProfileUpdateActionPerformed
 
@@ -899,36 +995,14 @@ public class EmployeeProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldStatusActionPerformed
 
     private void jButtonProfileAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProfileAddActionPerformed
+        clearTextField();
 
-        List<String> tableIdList = createTableIdList();
-        boolean isUnique = isUniqueEmployeeId(tableIdList);
+        String newEmployeeId = Integer.toString(generateUniqueId());
+        jTextFieldEmployeeNum.setText(newEmployeeId);
 
-        if (isUnique) {
-            DefaultTableModel model = (DefaultTableModel) jTableEmployeeList.getModel();
+        textFieldEditSetting(true);
+        jTextFieldEmployeeNum.setEditable(false);
 
-            model.addRow(new Object[]{
-                jTextFieldEmployeeNum.getText(),
-                jTextFieldLastName.getText(),
-                jTextFieldFirstName.getText(),
-                jTextFieldBirthday.getText(),
-                jTextAreaAddress.getText(),
-                jTextFieldPhoneNum.getText(),
-                jTextFieldSSSnum.getText(),
-                jTextFieldPhilhealthNum.getText(),
-                jTextFieldTINnum.getText(),
-                jTextFieldPagibigNum.getText(),
-                jTextFieldStatus.getText(),
-                jTextFieldPosition.getText(),
-                jTextFieldSupervisor.getText(),
-                jTextFieldBasicSalary.getText(),
-                jTextFieldRiceSubsidy.getText(),
-                jTextFieldPhoneAllow.getText(),
-                jTextFieldClothAllow.getText()});
-
-            JOptionPane.showMessageDialog(this, "Employee added successfully!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to add employee", "Duplicate ID", JOptionPane.WARNING_MESSAGE);
-        }
 
     }//GEN-LAST:event_jButtonProfileAddActionPerformed
 
@@ -974,6 +1048,26 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jScrollPane2MouseClicked
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Integer> list = new ArrayList<>();
+        int rowCount = jTableEmployeeList.getRowCount();
+        int lastNumber = 0;
+
+        for (int i = 0; i < rowCount; i++) {
+            list.add(Integer.parseInt(jTableEmployeeList.getValueAt(i, 0).toString()));
+        }
+
+        int employeeNum = Integer.parseInt(jTextFieldEmployeeNum.getText());
+        if (list.contains(employeeNum)) {
+
+            updateEmployee();
+        } else {
+            addEmployee();
+        }
+        textFieldEditSetting(false);
+    }//GEN-LAST:event_jButtonSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1023,6 +1117,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JButton jButtonProfileAdd;
     private javax.swing.JButton jButtonProfileDelete;
     private javax.swing.JButton jButtonProfileUpdate;
+    private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonUpdateDBS;
     private javax.swing.JButton jButtonViewEmployee;
     private javax.swing.JLabel jLabel10;

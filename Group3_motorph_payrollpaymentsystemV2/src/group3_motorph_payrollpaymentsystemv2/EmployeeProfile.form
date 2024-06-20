@@ -48,7 +48,7 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="107" max="-2" attributes="0"/>
-              <EmptySpace pref="20" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -653,10 +653,11 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jButtonProfileDelete" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonProfileAdd" min="-2" max="-2" attributes="0"/>
                               <Component id="jButtonClear" min="-2" max="-2" attributes="0"/>
                               <Component id="jButtonProfileUpdate" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonSave" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonProfileAdd" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonProfileDelete" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -678,12 +679,14 @@
                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   <Component id="jButtonClear" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButtonProfileAdd" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonProfileDelete" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <Component id="jButtonProfileAdd" min="-2" pref="25" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButtonProfileUpdate" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButtonProfileDelete" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jButtonSave" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="37" max="32767" attributes="0"/>
                   <Component id="jButtonUpdateDBS" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButtonViewEmployee" min="-2" max="-2" attributes="0"/>
@@ -739,6 +742,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonViewEmployeeActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonSave">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="SAVE"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSaveActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
