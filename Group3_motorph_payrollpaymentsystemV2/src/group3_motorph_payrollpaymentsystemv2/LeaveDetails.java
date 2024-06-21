@@ -14,18 +14,18 @@ public class LeaveDetails {
     private String leaveStatus;
 
     // Constructor
-    public LeaveDetails(String employeeNumber, String lastName, String firstName, String submittedDate,
-            String startDate, String endDate, String leaveDay,
-            String leaveReason, String leaveStatus) {
+    public LeaveDetails(String employeeNumber, String lastName, String firstName, String leaveStatus, String submittedDate,
+            String leaveReason, String startDate, String endDate, String leaveDay) {
         this.employeeNumber = employeeNumber;
         this.lastName = lastName;
         this.firstName = firstName;
-        this.startDate = startDate;
+        this.leaveStatus = leaveStatus;
         this.submittedDate = submittedDate;
+        this.leaveReason = leaveReason;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.leaveDay = leaveDay;
-        this.leaveReason = leaveReason;
-        this.leaveStatus = leaveStatus;
+
     }
 
     // Getter and Setter methods
@@ -61,7 +61,6 @@ public class LeaveDetails {
         this.startDate = startDate;
     }
 
-    
     public String getSubmittedDate() {
         return submittedDate;
     }
