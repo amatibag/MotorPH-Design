@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package group3_motorph_payrollpaymentsystemv2;
 
 import com.opencsv.CSVReader;
@@ -910,11 +907,15 @@ public class PayrollUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonProfile1ActionPerformed
 
     private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
-        // TODO add your handling code here:
-        String[] employeeInformation = sendInformation();
-        LeaveApplicationUser leaveUser = new LeaveApplicationUser(employeeInformation);
-        setVisible(false);
-        leaveUser.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            String[] employeeInformation = sendInformation();
+            LeaveApplicationUser1 leaveUser = new LeaveApplicationUser1(employeeInformation);
+            setVisible(false);
+            leaveUser.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(PayrollUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonLeaveAppActionPerformed
 
     private void jButtonPayroll1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPayroll1ActionPerformed

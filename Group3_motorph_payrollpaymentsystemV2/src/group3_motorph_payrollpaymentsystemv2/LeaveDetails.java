@@ -2,7 +2,8 @@ package group3_motorph_payrollpaymentsystemv2;
 
 public class LeaveDetails {
 
-    // Attributes
+    // Attributes  
+    private String entryNum;
     private String employeeNumber;
     private String lastName;
     private String firstName;
@@ -14,8 +15,10 @@ public class LeaveDetails {
     private String leaveStatus;
 
     // Constructor
-    public LeaveDetails(String employeeNumber, String lastName, String firstName, String leaveStatus, String submittedDate,
+    public LeaveDetails(        
+        String entryNum, String employeeNumber, String lastName, String firstName, String leaveStatus, String submittedDate,
             String leaveReason, String startDate, String endDate, String leaveDay) {
+        this.entryNum = entryNum;
         this.employeeNumber = employeeNumber;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -29,6 +32,13 @@ public class LeaveDetails {
     }
 
     // Getter and Setter methods
+     public String getentryNum() {
+        return entryNum;
+    }
+
+    public void setEntryNum(String entryNum) {
+        this.entryNum = entryNum;
+    }
     public String getEmployeeNumber() {
         return employeeNumber;
     }

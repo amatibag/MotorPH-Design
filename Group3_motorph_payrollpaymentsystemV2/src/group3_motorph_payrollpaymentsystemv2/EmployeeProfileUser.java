@@ -531,11 +531,15 @@ public class EmployeeProfileUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonProfileActionPerformed
 
     private void jButtonLeaveAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLeaveAppActionPerformed
-        // TODO add your handling code here:
-        String[] employeeInformation = sendInformation();
-        LeaveApplicationUser leaveUser = new LeaveApplicationUser(employeeInformation);
-        setVisible(false);
-        leaveUser.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            String[] employeeInformation = sendInformation();
+            LeaveApplicationUser1 leaveUser = new LeaveApplicationUser1(employeeInformation);
+            setVisible(false);
+            leaveUser.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeProfileUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonLeaveAppActionPerformed
 
     private void jButtonPayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPayrollActionPerformed

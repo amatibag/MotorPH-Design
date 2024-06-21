@@ -5,9 +5,9 @@ Doesn't allow startDate to be after endDate
 User can update or cancel leave application that is still pending
 Leave Status will be marked as pending, approved and rejected
  */
-
 package group3_motorph_payrollpaymentsystemv2;
 
+import com.opencsv.CSVWriter;
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import javax.swing.JTable;
 
 public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
@@ -36,10 +37,20 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
     private static HashMap<String, Integer> leaveBalanceMap = new HashMap<>();
     private List<LeaveDetails> employees = new ArrayList<>();
 
+    private String userEmployeeNumber;
+    private String userLastName;
+    private String userFirstName;
+    private static String[] userInformation;
+
     /**
      * Creates new form LeaveApplicationUser
      */
-    public LeaveApplicationUser1() throws FileNotFoundException, IOException {
+    public LeaveApplicationUser1(String[] userInformation) throws FileNotFoundException, IOException {
+
+        this.userEmployeeNumber = userInformation[0];
+        this.userLastName = userInformation[1];
+        this.userFirstName = userInformation[2];
+
         initComponents();
 
         showDetails();
@@ -50,16 +61,15 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
     }
 
     public String getEmployeeNumber() {
-
-        return "1";
+        return userEmployeeNumber;
     }
 
     public String getLastName() {
-        return "Garcia";
+        return userLastName;
     }
 
     public String getFirstName() {
-        return "Manuel III";
+        return userFirstName;
     }
 
     public String getuserFullName() {
@@ -91,17 +101,18 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         });
 
         for (String[] record : records) {
-            String employeeNumber = record[0];
-            String lastName = record[1];
-            String firstName = record[2];
-            String dateFiled = record[3];
-            String startDate = record[4];
-            String endDate = record[5];
-            String leaveDay = record[6];
-            String leaveReason = record[7];
-            String leaveStatus = record[8];
+            String entryNum = record[0];
+            String employeeNumber = record[1];
+            String lastName = record[2];
+            String firstName = record[3];
+            String dateFiled = record[4];
+            String startDate = record[5];
+            String endDate = record[6];
+            String leaveDay = record[7];
+            String leaveReason = record[8];
+            String leaveStatus = record[9];
 
-            LeaveDetails leaveDetails = new LeaveDetails(employeeNumber, lastName, firstName, dateFiled,
+            LeaveDetails leaveDetails = new LeaveDetails(entryNum, employeeNumber, lastName, firstName, dateFiled,
                     startDate, endDate, leaveDay,
                     leaveReason, leaveStatus);
             employees.add(leaveDetails);
@@ -209,6 +220,39 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     }
 
+    public static void appendCSV(JTable table) {
+
+        String csvFile = "leave_applications_2.csv";
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFile, true))) {
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            // Write column headers only if the file is new
+            java.io.File file = new java.io.File(csvFile);
+            if (file.length() == 0) {
+                String[] columnNames = {"employeeNumber", "lastName", "firstName", "leaveStatus",
+                    "submittedDate", "leaveReason", "startDate", "endDate", "leaveDay"};
+                writer.writeNext(columnNames);
+            }
+
+            //Write rows
+            int rowCount = model.getRowCount();
+            int columnCount = model.getColumnCount();
+            for (int i = 0; i < rowCount; i++) {
+                if ("Pending".equals(model.getValueAt(i, 0).toString())) {
+                    String[] rowData = new String[columnCount];
+                    for (int j = 0; j < columnCount; j++) {
+                        rowData[j] = model.getValueAt(i, j).toString();
+                    }
+                    writer.writeNext(rowData);
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Record updated successfully");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Failed to update your record.");
+        }
+    }
+
     public void showEntrytoTextField() {
         try {
             DefaultTableModel tableModel = (DefaultTableModel) jTableLeaveApplications.getModel();
@@ -249,6 +293,31 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
             throw new ParseException("Unparseable date: " + dateObj, 0);
         }
     }
+    
+     public List<String> createTableEntryIDList() {
+        DefaultTableModel model = (DefaultTableModel) jTableLeaveApplications.getModel();
+        List<String> tableEntryList = new ArrayList<>();
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String id = model.getValueAt(i, 0).toString();
+            tableEntryList.add(id);
+        }
+        return tableEntryList;
+    }
+    
+    public boolean isNewEntry(List<String> tableIdList) {
+        String newEmployeeId = jTextFieldEmployeeNum.getText().trim();
+        
+        for (int i = 0; i < tableIdList.size(); i++) {
+            if (tableIdList.get(i).equals(newEmployeeId)) {
+                JOptionPane.showMessageDialog(this, "ID number already exist");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -593,7 +662,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
         if (selectedRow != -1) {
             // Get the leave status of the selected row
-            String leaveStatus = (String) jTableLeaveApplications.getValueAt(selectedRow, 0);
+            String leaveStatus = (String) jTableLeaveApplications.getValueAt(selectedRow, 1);
 
             if (leaveStatus.equals("Pending")) {
                 int response = JOptionPane.showConfirmDialog(null,
@@ -631,7 +700,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         int selectedRow = jTableLeaveApplications.getSelectedRow();
         if (selectedRow != -1) {
             // Get the leave status of the selected row
-            String leaveStatus = (String) jTableLeaveApplications.getValueAt(selectedRow, 0);
+            String leaveStatus = (String) jTableLeaveApplications.getValueAt(selectedRow, 1);
 
             if (leaveStatus.equals("Pending")) {
                 int response = JOptionPane.showConfirmDialog(null,
@@ -660,23 +729,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
 
     private void jButtonSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSubmitActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel) jTableLeaveApplications.getModel();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String dateSubmitted = (String) tableModel.getValueAt(i, 0);
-                String name = (String) tableModel.getValueAt(i, 1);
-                String id = (String) tableModel.getValueAt(i, 2);
-                String startDate = (String) tableModel.getValueAt(i, 3);
-                String endDate = (String) tableModel.getValueAt(i, 4);
-                int leaveBalance = (int) tableModel.getValueAt(i, 5);
-                writer.write(dateSubmitted + "," + name + "," + id + "," + startDate + "," + endDate + "," + leaveBalance);
-                writer.newLine();
-            }
-            JOptionPane.showMessageDialog(null, "Data saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving data", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        appendCSV(jTableLeaveApplications);
     }//GEN-LAST:event_jButtonSubmitActionPerformed
 
     private void jRadioButtonVacationLeave1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonVacationLeave1ActionPerformed
@@ -736,7 +789,7 @@ public class LeaveApplicationUser1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new LeaveApplicationUser1().setVisible(true);
+                    new LeaveApplicationUser1(userInformation).setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(LeaveApplicationUser1.class.getName()).log(Level.SEVERE, null, ex);
                 }
