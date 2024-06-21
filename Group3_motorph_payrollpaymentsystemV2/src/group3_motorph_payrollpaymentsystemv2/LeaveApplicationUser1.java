@@ -3,7 +3,9 @@ Notes:
 Allows late filling of leave
 Doesn't allow startDate to be after endDate
 User can update or cancel leave application that is still pending
+Leave Status will be marked as pending, approved and rejected
  */
+
 package group3_motorph_payrollpaymentsystemv2;
 
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
