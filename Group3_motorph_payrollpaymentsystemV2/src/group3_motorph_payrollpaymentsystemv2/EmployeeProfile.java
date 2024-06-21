@@ -2,6 +2,7 @@ package group3_motorph_payrollpaymentsystemv2;
 
 import group3_motorph_payrollpaymentsystemV2.Employee;
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class EmployeeProfile extends javax.swing.JFrame {
         csvRun(csvFile);
 
         textFieldEditSetting(false);
+        setIconImage();
     }
 
     /**
@@ -980,5 +982,9 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldSupervisor;
     private javax.swing.JTextField jTextFieldTINnum;
     // End of variables declaration//GEN-END:variables
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.jpg")));
+    }
 
 }

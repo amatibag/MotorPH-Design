@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +43,7 @@ public class PayrollUser extends javax.swing.JFrame {
         parsePayrollRecords(records);
         populatecomboboxCoveredPeriods();
         showEmployeeInformation();
+        setIconImage();
 
     }
 
@@ -55,6 +57,10 @@ public class PayrollUser extends javax.swing.JFrame {
 
     public String getFirstName() {
         return userFirstName;
+    }
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.jpg")));
     }
 
     public class PayrollUserInformation {

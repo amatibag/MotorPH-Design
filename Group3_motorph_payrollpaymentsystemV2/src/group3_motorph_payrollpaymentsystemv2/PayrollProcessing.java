@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
+import java.awt.Toolkit;
 
 /**
  *
@@ -40,6 +41,7 @@ public class PayrollProcessing extends javax.swing.JFrame {
         List<String[]> records = Filehandling.readCSV(csvWorkedHoursFile);
         parseRecordsHoursWorked(records);
         populatecomboboxCoveredPeriods();
+        setIconImage();
 
     }
 
@@ -710,4 +712,8 @@ public class PayrollProcessing extends javax.swing.JFrame {
     public javax.swing.JTextField jTextFieldWorkedHours;
     public javax.swing.JTextField jTextSssDeduction;
     // End of variables declaration//GEN-END:variables
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.jpg")));
+    }
 }

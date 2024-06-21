@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import group3_motorph_payrollpaymentsystemV2.Filehandling;
+import java.awt.Toolkit;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class LoginManager extends javax.swing.JFrame {
         List<String[]> records = Filehandling.readCSV(csvFile);
         parseUserCredentials(records);
         loadAttemptsFromCSV();
+        setIconImage();
     }
 
     public List< EmployeeLogin> parseUserCredentials(List<String[]> records) {
@@ -324,4 +326,8 @@ public class LoginManager extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordFieldInput;
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("logo.jpg")));
+    }
 }
